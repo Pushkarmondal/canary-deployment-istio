@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: myapp-v2
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: myapp
+        version: v2
+    spec:
+      containers:
+      - name: myapp
+        image: docker.io/khabdrick/quotes:v2
+        resources:
+          requests:
+            cpu: "100m"  # Requests 100 milliCPUs
+            memory: "256Mi"  
+          limits:
+            cpu: "200m"  # Limits the CPU usage to 200 milliCPUs
+            memory: "512Mi"

@@ -1,0 +1,59 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: myapp-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 8080
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: myapp-vs
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - myapp-gateway
+  http:
+  - match:
+    - uri:
+        exact: /themes/
+    - uri:
+        prefix: /quote/
+    - uri:
+        exact: /home/
+    route:
+    - destination:
+        host: myapp # must match the Service we created earlier
+        subset: v1
+        port:
+          number: 8000
+      weight: 90  # Decrease as v2 proves stable
+    - destination:
+        host: myapp # must match the Service we created earlier
+        subset: v2
+        port:
+          number: 8000
+      weight: 10  # Increase as v2 proves stable
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: myapp-destination
+spec:
+  host: myapp
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
