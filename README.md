@@ -3,9 +3,6 @@
 This project demonstrates how to implement **canary releases** in Kubernetes using **Istio**. Canary releases allow you to roll out new versions of your application to a small subset of users, monitor their performance, and gradually shift traffic to the new version if everything looks good.
 ## [Main Blog Link](https://www.aviator.co/blog/implementing-canary-releases-in-kubernetes-with-istio/#)
 ---
-Credit goes to -> Muhammed Ali
-
----
 
 ## Table of Contents
 1. [What is a Canary Release?](#what-is-a-canary-release)
